@@ -5,8 +5,8 @@
 		<title>AngularJS • TodoMVC</title>
 		<link rel="stylesheet" href="base.css">
 	</head>
-	<body>
-		<section id="todoapp" ng-controller= "todoCtrl">
+	<body ng-controller= "todoCtrl">
+		<section id="todoapp">
 			<header id="header">
 				<h1>todos</h1>
 				<form id="todo-form" ng-submit="addTodo()">
@@ -16,34 +16,37 @@
       
 			<!-- This section should be hidden by default and shown when there are todos -->
 			<section id="main">
-				<input id="toggle-all" type="checkbox">
+				<input id="toggle-all" type="checkbox" ng-model="masterCheckbox" ng-click="checkAll()">
 				<label for="toggle-all">Mark all as complete</label>
 				<ul id="todo-list" >
 					<!-- These are here just to show the structure of the list items -->
 					<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
-					<li ng-repeat="todo in todosList" ng-class="{completed: checked}">
+					<li ng-repeat="todo in todosFilteredList = (todosList | filter:todoFilter)" ng-class="{completed: checked}">
 						<div class="view">
-							<input class="toggle" type="checkbox" ng-model="checked">
-							<label ng-dblclick="editTodo(todo)">{{todo}}</label>
+							<input class="toggle" type="checkbox" ng-checked="masterCheckbox" ng-model="checked" ng-click="completeTodo(todo)">
+							<label>{{todo.text}}</label>
 							<button class="destroy" ng-click="removeTodo(todo)"></button>
 						</div>
 					</li>
 				</ul>
 			</section> <!-- id="main" -->
 			<!-- This footer should hidden by default and shown when there are todos -->
-			<footer id="footer">
+			<footer id="footer" ng-show="todosList.length">
 				<!-- This should be `0 items left` by default -->
-				<span id="todo-count"><strong>1</strong> item left</span>
+				<span id="todo-count">
+				<strong>{{todosFilteredList.length}}</strong>
+				<ng-pluralize count="todosFilteredList.length" when="{'1': ' item left','other': ' items left'}"></ng-pluralize>
+				</span>
 				<!-- Remove this if you don't implement routing -->
-				<ul id="filters">
+				<ul id="filters" ng-model="todoFilter.completed">
 					<li>
-						<a class="selected" href="#/">All</a>
+						<a ng-click="selectFilter('')" href="#/">All</a>
 					</li>
 					<li>
-						<a href="#/active">Active</a>
+						<a ng-click="selectFilter(false)"  href="#/active">Active</a>
 					</li>
 					<li>
-						<a href="#/completed">Completed</a>
+						<a ng-click="selectFilter(true)" href="#/completed">Completed</a>
 					</li>
 				</ul>
 				<!-- Hidden if no completed items are left ↓ -->

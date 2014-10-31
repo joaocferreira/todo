@@ -9,20 +9,30 @@ var newTodo = $scope.newTodo.trim();
 if (!newTodo.length) {
 	return;
 	}
-$scope.todosList.push($scope.newTodo);
+$scope.todosList.push({
+text:$scope.newTodo,
+completed: false
+});
 $scope.newTodo = '';
-};
-
-$scope.editTodo = function (todo) {
-$scope.todoEdited = todo;
-};
-
-$scope.doneEditing = function (todo) {
-todo = $scope.editedTodo.trim();
 };
 	
 $scope.removeTodo = function (todo) {
 $scope.todosList.splice($scope.todosList.indexOf(todo), 1);
+};
+
+$scope.completeTodo = function (todo){
+todo.completed = !todo.completed;
+};
+
+$scope.selectFilter = function(arg) {
+$scope.todoFilter=arg;
+};
+
+$scope.checkAll = function() {
+if($scope.masterCheckbox==true){
+$scope.checked=true;}
+else{
+$scope.checked=false;}
 };
 
 });
