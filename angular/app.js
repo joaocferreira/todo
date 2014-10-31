@@ -3,6 +3,7 @@ var todomvc = angular.module('todomvc', []);
 todomvc.controller('todoCtrl', function($scope){
 
 $scope.todosList = [];
+$scope.todoFilter=null;
 
 $scope.addTodo=function(){
 var newTodo = $scope.newTodo.trim();
@@ -29,10 +30,16 @@ $scope.todoFilter=arg;
 };
 
 $scope.checkAll = function() {
-if($scope.masterCheckbox==true){
-$scope.checked=true;}
-else{
-$scope.checked=false;}
+$scope.todosList.forEach(function(todo){
+todo.completed=$scope.masterCheckbox;
+});
+};
+
+$scope.clearCompleted = function() {
+$scope.todosList.forEach(function(todo){
+if(todo.completed==true){
+$scope.removeTodo(todo);}
+});
 };
 
 });
