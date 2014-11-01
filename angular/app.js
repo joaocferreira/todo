@@ -16,7 +16,16 @@ completed: false
 });
 $scope.newTodo = '';
 };
-	
+
+$scope.startEdit = function (todo) {
+text = todo.text;
+$scope.editedTodo = todo;
+};
+
+$scope.doneEditing = function () {
+$scope.editedTodo = null;
+};
+
 $scope.removeTodo = function (todo) {
 $scope.todosList.splice($scope.todosList.indexOf(todo), 1);
 };
